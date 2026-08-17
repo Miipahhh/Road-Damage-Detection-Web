@@ -1,37 +1,123 @@
-# Road Damage Detection System (Web Platform)
+# 🛣️ Road Damage Detection System (Web Platform)
 
-Repositori ini berisi *source code* untuk aplikasi web (Frontend & Backend) dari **Road Damage Detection System**. Sistem ini digunakan untuk memantau, mendeteksi, dan melacak kerusakan jalan secara *real-time*.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 
-> **Catatan Penting:** 
-> Sistem deteksi kerusakan pada aplikasi web ini terintegrasi dan saling terhubung dengan Model Machine Learning / Computer Vision yang dikembangkan secara terpisah.
+Selamat datang di repositori web **Road Damage Detection System**. Aplikasi ini adalah sebuah *platform* cerdas yang ditujukan bagi instansi atau dinas terkait (seperti Dinas PU) untuk memantau, mendeteksi, dan mengelola pelaporan kerusakan jalan secara terintegrasi dan *real-time*.
+
+---
+
+## 🔗 Integrasi Model Artificial Intelligence (AI)
+
+> **⚠️ PENTING:** 
+> Repositori ini **hanya berisi bagian aplikasi web (Frontend & Backend)**. Sistem pendeteksian cerdas pada aplikasi ini didukung oleh Model *Computer Vision / Machine Learning* yang dikerjakan secara terpisah.
 > 
-> 🔗 **Repository Model AI dapat diakses di sini:** `[MASUKKAN_LINK_REPO_TEMAN_ANDA_DI_SINI]`
+> Untuk melihat struktur model AI, arsitektur, dan cara pelatihannya, silakan kunjungi repositori terhubung milik rekan peneliti saya di bawah ini:
+> 
+> 👉 **[Tautan Repositori Model AI Teman Saya] (Silakan ganti dengan link GitHub yang sebenarnya)**
 
-## Struktur Proyek
+---
 
-Proyek ini terdiri dari dua bagian utama:
-1. **Frontend**: Menggunakan React.js dan Vite, serta Tailwind CSS untuk antarmuka pengguna.
-2. **Backend**: Menggunakan Laravel (PHP) sebagai REST API dan sistem manajemen basis data.
+## ✨ Fitur Utama
 
-## Prasyarat
-- **Node.js** (v18 atau lebih baru)
-- **PHP** (v8.1 atau lebih baru)
-- **Composer**
-- **MySQL/MariaDB**
+Sistem ini memiliki berbagai fitur utama yang disesuaikan berdasarkan hak akses (Role) penggunanya:
 
-## Cara Menjalankan Aplikasi di Local
+### 👨‍💻 Admin
+- **Dashboard Analitik**: Melihat ringkasan dan statistik kerusakan jalan berdasarkan tingkat keparahan (*severity*).
+- **Manajemen Pengguna**: Menambahkan, mengedit, dan menghapus akun (Petugas Lapangan & Tim Reparasi).
+- **Peta Interaktif**: Memantau seluruh titik kerusakan jalan yang telah terdeteksi dalam satu peta komprehensif.
 
-1. Buka terminal di folder proyek ini.
-2. Untuk pertama kali, Anda bisa menjalankan script setup (pastikan Anda sudah mengonfigurasi `.env` di backend):
+### 🕵️‍♂️ Petugas Lapangan
+- **Tracking Otomatis**: Memulai sesi patroli dengan integrasi GPS dan kamera cerdas.
+- **Deteksi Real-time**: Secara otomatis menandai jalan berlubang, retak buaya, dsb., saat di perjalanan.
+- **Riwayat Tracking**: Melihat rekap rute patroli dan kerusakan yang ditemukan selama sesi sebelumnya.
+
+### 👷 Tim Reparasi
+- **Daftar Tugas Perbaikan**: Menerima data titik kerusakan jalan yang valid untuk segera ditindaklanjuti.
+- **Update Status**: Mengubah status kerusakan menjadi "Sedang Diperbaiki" atau "Selesai" (dilengkapi bukti perbaikan).
+- **Notifikasi Penolakan**: Mendapat catatan langsung apabila bukti perbaikan ditolak oleh Admin.
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+Aplikasi ini dibangun menggunakan arsitektur *Client-Server* dengan tumpukan teknologi modern:
+
+**Frontend:**
+- [React.js](https://reactjs.org/) (dengan Vite)
+- [Tailwind CSS](https://tailwindcss.com/) untuk *styling* adaptif (Mendukung Light/Dark Mode)
+- [Leaflet.js](https://leafletjs.com/) untuk visualisasi Peta (Geospatial)
+- Axios untuk manajemen permintaan API
+
+**Backend:**
+- [Laravel 11](https://laravel.com/) (PHP)
+- [MySQL](https://www.mysql.com/) sebagai Basis Data Relasional
+- Laravel Sanctum untuk Autentikasi API yang aman
+
+---
+
+## 📂 Struktur Direktori
+
+```text
+Road-Damage-Web/
+├── backend/            # Source code Laravel API & Database Migrations
+├── frontend/           # Source code React.js & Vite
+├── .gitignore          # File gitignore utama
+├── setup-laravel.bat   # Script otomatisasi instalasi pertama kali (Windows)
+├── start.bat           # Script otomatisasi untuk menjalankan web (Windows)
+└── restart.bat         # Script otomatisasi restart server
+```
+
+---
+
+## 🚀 Panduan Instalasi (Local Development)
+
+Untuk menjalankan proyek ini di mesin lokal (komputer/laptop) Anda, pastikan Anda telah menginstal beberapa perangkat lunak berikut:
+- **Node.js** (Versi 18+ disarankan)
+- **PHP** (Versi 8.1+)
+- **Composer** (Package manager PHP)
+- **MySQL / MariaDB** (Disarankan menggunakan Laragon / XAMPP)
+
+### Langkah 1: Persiapan Database
+1. Buka aplikasi Laragon / XAMPP Anda dan jalankan MySQL.
+2. Buat database baru dengan nama `road_damage_db` (atau sesuai keinginan Anda).
+
+### Langkah 2: Setup Otomatis (Hanya Pengguna Windows)
+Kami telah menyediakan skrip *batch* agar instalasi lebih mudah.
+1. *Clone* atau *download* repositori ini.
+2. Buka Terminal/Command Prompt di folder proyek utama.
+3. Jalankan skrip setup berikut:
    ```bash
    setup-laravel.bat
    ```
-3. Untuk menjalankan aplikasi (menjalankan backend dan frontend secara bersamaan):
-   ```bash
-   start.bat
+   *(Skrip ini otomatis menginstal dependensi Composer, NPM, dan menyiapkan file `.env` dasar)*
+4. Buka file `backend/.env` dan pastikan konfigurasi koneksi database Anda sudah benar:
+   ```env
+   DB_DATABASE=road_damage_db
+   DB_USERNAME=root
+   DB_PASSWORD=
    ```
-4. Aplikasi frontend akan dapat diakses di `http://localhost:5173` dan backend API di `http://localhost:8000`.
+5. Migrasikan database:
+   ```bash
+   cd backend
+   php artisan migrate --seed
+   ```
 
-## Pengembang
+### Langkah 3: Menjalankan Aplikasi
+Anda hanya perlu menjalankan satu perintah dari folder *root* proyek untuk menyalakan Backend API dan Frontend secara bersamaan:
+```bash
+start.bat
+```
 
-Aplikasi web ini dikembangkan sebagai bagian dari Tugas Akhir.
+- **Frontend (Web App)** akan otomatis berjalan di `http://localhost:5173`
+- **Backend (API)** akan berjalan di `http://localhost:8000`
+
+---
+
+## 👨‍🎓 Hak Cipta & Pengembang
+
+Aplikasi web ini dikembangkan sebagai bagian dari Tugas Akhir Universitas. Seluruh *source code* dirancang untuk keperluan akademis dan penelitian terkait integrasi *Computer Vision* pada aplikasi pemantauan jalan raya.
+
+Dibuat dengan ❤️ oleh **[Nama Anda]**
