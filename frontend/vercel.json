@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://api.geovision.risetmaster.my.id/api/:path*"
+    },
+    {
+      "source": "/storage/:path*",
+      "destination": "https://api.geovision.risetmaster.my.id/storage/:path*"
+    },
+    {
+      "source": "/yolo/:path*",
+      "destination": "https://ryumarz-road-damage-api.hf.space/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

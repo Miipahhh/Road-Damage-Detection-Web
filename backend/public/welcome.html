@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Damage Detection API</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #e94560;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        .status {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .endpoints {
+            background: #1a1a2e;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .endpoint {
+            padding: 15px;
+            margin: 10px 0;
+            background: #16213e;
+            border-left: 4px solid #e94560;
+            border-radius: 5px;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+        .get { background: #27ae60; }
+        .post { background: #e94560; }
+        .put { background: #f39c12; }
+        .delete { background: #e74c3c; }
+        .url {
+            color: #55ff55;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+        .description {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #666;
+        }
+        a {
+            color: #e94560;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #e94560;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Road Damage Detection API</h1>
+        <p class="subtitle">YOLOv8 Instance Segmentation Backend</p>
+        
+        <div style="text-align: center;">
+            <span class="status">✓ API Running</span>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <span class="badge">Laravel 10</span>
+            <span class="badge">YOLOv8</span>
+            <span class="badge">MySQL</span>
+        </div>
+
+        <div class="endpoints">
+            <h2 style="color: #e94560; margin-bottom: 15px;">📡 API Endpoints</h2>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/health</span>
+                <div class="description">Health check endpoint</div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/road-damages</span>
+                <div class="description">Get all road damages with filters</div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/road-damages/{id}</span>
+                <div class="description">Get single road damage by ID</div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="url">/api/road-damages/detect</span>
+                <div class="description">Detect road damage from uploaded image</div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <span class="url">/api/road-damages/{id}</span>
+                <div class="description">Update road damage record</div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <span class="url">/api/road-damages/{id}</span>
+                <div class="description">Delete road damage record</div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/road-damages/stats/summary</span>
+                <div class="description">Get statistics summary</div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/road-damages/map/markers</span>
+                <div class="description">Get map markers data</div>
+            </div>
+        </div>
+
+        <div style="background: #1a1a2e; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h3 style="color: #e94560; margin-bottom: 10px;">📚 Documentation</h3>
+            <p style="margin: 10px 0;">
+                <a href="/api/health" target="_blank">→ Test Health Endpoint</a>
+            </p>
+            <p style="margin: 10px 0;">
+                <a href="https://github.com/yourusername/road-damage-detection" target="_blank">→ Full API Documentation</a>
+            </p>
+        </div>
+
+        <div style="background: #1a1a2e; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h3 style="color: #e94560; margin-bottom: 10px;">🎯 Damage Types</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 5px 0; color: #ff5555;">● Retak Buaya (Alligator Crack)</li>
+                <li style="padding: 5px 0; color: #55ff55;">● Retak Memanjang (Longitudinal Crack)</li>
+                <li style="padding: 5px 0; color: #5555ff;">● Retak Melintang (Transverse Crack)</li>
+                <li style="padding: 5px 0; color: #ffff55;">● Lubang (Pothole)</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Road Damage Detection System v1.0.0</p>
+            <p style="margin-top: 10px;">
+                Powered by <strong style="color: #e94560;">YOLOv8</strong> + 
+                <strong style="color: #e94560;">Laravel</strong>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                enowX Labs AI - ENOWX-MB0SW-QPRSQ-4TLA0-Y8ZK4
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Test API health on page load
+        fetch('/api/health')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Health:', data);
+            })
+            .catch(error => {
+                console.error('API Error:', error);
+                document.querySelector('.status').textContent = '✗ API Error';
+                document.querySelector('.status').style.background = '#e74c3c';
+            });
+    </script>
+</body>
+</html>

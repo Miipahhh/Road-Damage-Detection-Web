@@ -1,0 +1,75 @@
+# Laravel
+Backend/vendor/
+Backend/node_modules/
+Backend/.env
+Backend/storage/*.key
+Backend/storage/app/*
+Backend/storage/framework/cache/*
+Backend/storage/framework/sessions/*
+Backend/storage/framework/views/*
+Backend/storage/logs/*
+!Backend/storage/app/.gitkeep
+!Backend/storage/app/public/.gitkeep
+!Backend/storage/framework/.gitkeep
+!Backend/storage/logs/.gitkeep
+Backend/bootstrap/cache/*
+!Backend/bootstrap/cache/.gitkeep
+
+# React/Node
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.env
+Frontend/.env.local
+Frontend/.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Model - Dataset (gambar besar, tidak perlu di-version control)
+Model/train/
+Model/valid/
+Model/test/
+
+# Model - YOLO training output, cache & output tools
+Model/runs/
+Model/saved_frames/
+Model/*.cache
+Model/output/
+Model/extracted_frames/
+
+# YOLO lama (sudah dipindah ke Model/)
+runs/
+saved_frames/
+*.pt.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Large archives and backups
+*.zip
+*.sql
+
+# Dokumen/catatan pribadi (thesis, dll) - tidak perlu di-version control
+dokumen/

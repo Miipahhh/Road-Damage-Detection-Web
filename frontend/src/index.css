@@ -1,0 +1,1124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ====================================================
+   THEME VARIABLES
+   ==================================================== */
+:root,
+[data-theme="dark"] {
+  --color-primary: #e94560;
+  --color-secondary: #1a1a2e;
+  --color-accent: #16213e;
+  --color-surface: #1a2035;
+  --color-surface-hover: #1e2a45;
+  --color-border: #374151;
+  --color-border-subtle: rgba(75, 85, 99, 0.4);
+  --color-text: #f3f4f6;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #9ca3af;
+  --color-text-dim: #6b7280;
+  --color-input-bg: #1a1a2e;
+  --color-input-border: #4b5563;
+  --color-card-bg: #16213e;
+  --color-nav-bg: linear-gradient(to right, #111827, #1f2937, #1e3a5f);
+  --color-nav-solid: #111827;
+  --color-dropdown-bg: #1f2937;
+  --color-badge-bg: rgba(59, 130, 246, 0.2);
+  --color-badge-text: #93c5fd;
+  --color-badge-border: rgba(59, 130, 246, 0.4);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-dropdown: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] {
+  --color-primary: #6366f1;
+  --color-secondary: #f5f6fa;
+  --color-accent: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8fafc;
+  --color-border: #e8eaf0;
+  --color-border-subtle: rgba(203, 213, 225, 0.5);
+  --color-text: #1e293b;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  --color-text-dim: #94a3b8;
+  --color-input-bg: #f8f9fc;
+  --color-input-border: #dde1eb;
+  --color-card-bg: #ffffff;
+  --color-nav-bg: linear-gradient(to right, #ffffff, #f8f9fc, #f0f1ff);
+  --color-nav-solid: #ffffff;
+  --color-dropdown-bg: #ffffff;
+  --color-badge-bg: rgba(99, 102, 241, 0.08);
+  --color-badge-text: #6366f1;
+  --color-badge-border: rgba(99, 102, 241, 0.2);
+  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.06);
+  --shadow-dropdown: 0 8px 32px rgba(0, 0, 0, 0.10);
+}
+
+
+/* ═══════════════════════════════════════════════════
+   THEME TRANSITION — smooth dark ↔ light
+   ═══════════════════════════════════════════════════ */
+
+/* ── View Transition API (Chrome/Edge 111+) ──────── */
+@keyframes theme-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes theme-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 0.5s — cukup lama agar terlihat, tidak terasa lambat */
+::view-transition-old(root) {
+  animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1) both theme-fade-out;
+}
+::view-transition-new(root) {
+  animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1) both theme-fade-in;
+}
+
+/* ── #theme-overlay (overlay fallback JS) ─────────── */
+/* Properti posisi/z-index diset via JS.
+   Hanya pastikan compositing layer & will-change untuk GPU. */
+#theme-overlay {
+  will-change: opacity;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   NAVBAR — sticky + glassmorphism on scroll
+   ═══════════════════════════════════════════════════ */
+
+/* Pastikan navbar sticky di atas konten saat scroll */
+nav[class*="border-b"] {
+  position: sticky;
+  top: 0;
+}
+
+/* Backdrop-filter support check */
+@supports (backdrop-filter: blur(12px)) {
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   PAGE TRANSITION ANIMATIONS
+   (Animasi utama pakai Web Animations API di JS,
+    class berikut hanya sebagai fallback utility)
+   ═══════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* Utility classes untuk modal / drawer */
+.animate-slide-up   { animation: slideUpFade 0.3s  cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-in    { animation: fadeIn      0.25s ease both; }
+.animate-slide-left { animation: slideInLeft 0.3s  cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+
+/* ── Toast Animations ────────────────────────────────────────────────── */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(80px) scale(0.95); }
+  to   { opacity: 1; transform: translateX(0)    scale(1);    }
+}
+@keyframes shrinkBar {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+/* ── Performance: prefer-reduced-motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* Hanya matikan page transition & theme animation */
+  /* JANGAN matikan semua animasi — spinner dll tetap harus berputar */
+  .page-enter-active,
+  .animate-slide-up,
+  .animate-fade-in,
+  .animate-slide-left {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+
+@layer base {
+  body {
+    background-color: var(--color-secondary);
+    color: var(--color-text);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply font-semibold py-2 px-4 rounded-lg transition-colors;
+    background-color: var(--color-primary);
+    color: #ffffff;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+  
+  .btn-secondary {
+    @apply font-semibold py-2 px-4 rounded-lg transition-colors;
+    background-color: var(--color-accent);
+    color: var(--color-text);
+  }
+  .btn-secondary:hover { opacity: 0.85; }
+  
+  .card {
+    @apply rounded-lg shadow-lg p-6;
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-card);
+  }
+  
+  .input-field {
+    @apply w-full rounded-lg px-4 py-2 text-[16px] focus:outline-none transition-colors;
+    background-color: var(--color-input-bg);
+    border: 1px solid var(--color-input-border);
+    color: var(--color-text);
+  }
+  .input-field:focus {
+    border-color: var(--color-primary);
+  }
+
+  /* ── Theme-aware utility classes ── */
+  .theme-bg       { background-color: var(--color-secondary); }
+  .theme-surface   { background-color: var(--color-surface); }
+  .theme-card      { background-color: var(--color-card-bg); border: 1px solid var(--color-border); }
+  .theme-text      { color: var(--color-text); }
+  .theme-text-sec  { color: var(--color-text-secondary); }
+  .theme-text-muted{ color: var(--color-text-muted); }
+  .theme-border    { border-color: var(--color-border); }
+  .theme-input     { background-color: var(--color-input-bg); border-color: var(--color-input-border); color: var(--color-text); }
+}
+
+/* ─────────────────────────────────────
+   NATURAL AURORA BACKGROUND
+   ───────────────────────────────────── */
+.bg-aurora-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.aurora-blob {
+  position: absolute;
+  filter: blur(120px);
+  opacity: 0.25;
+  border-radius: 50%;
+  animation: aurora-float 20s infinite alternate ease-in-out;
+}
+
+[data-theme="dark"] .aurora-blob {
+  opacity: 0.12; /* Softer in dark mode */
+}
+
+.aurora-1 {
+  width: 60vw;
+  height: 60vh;
+  top: -20%;
+  left: -10%;
+  background: #3b82f6; /* Blue */
+}
+
+.aurora-2 {
+  width: 50vw;
+  height: 50vh;
+  bottom: -10%;
+  right: -10%;
+  background: #6366f1; /* Indigo */
+  animation-delay: -5s;
+  animation-duration: 25s;
+}
+
+.aurora-3 {
+  width: 40vw;
+  height: 40vh;
+  top: 30%;
+  left: 20%;
+  background: #0ea5e9; /* Sky Blue */
+  animation-delay: -10s;
+  animation-duration: 30s;
+}
+
+@keyframes aurora-float {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(5%, 5%) scale(1.1); }
+  66% { transform: translate(-5%, 8%) scale(0.95); }
+  100% { transform: translate(2%, -5%) scale(1.05); }
+}
+
+.aurora-interactive {
+  position: fixed;
+  top: -200px; /* Offset by half width to center on cursor */
+  left: -200px;
+  width: 400px;
+  height: 400px;
+  background: #3b82f6; /* Blue */
+  filter: blur(120px);
+  border-radius: 50%;
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+  /* Smooth trailing animation is handled by JS animate API */
+}
+[data-theme="dark"] .aurora-interactive {
+  opacity: 0.15;
+}
+
+/* ─────────────────────────────────────
+   AI VISION DECORATION (LIGHTWEIGHT)
+   ───────────────────────────────────── */
+.ai-vision-box {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+[data-theme="light"] .ai-vision-box {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.ai-vision-corners {
+  position: absolute;
+  inset: -2px;
+  background: 
+    linear-gradient(to right, #3b82f6 2px, transparent 2px) 0 0,
+    linear-gradient(to bottom, #3b82f6 2px, transparent 2px) 0 0,
+    linear-gradient(to left, #3b82f6 2px, transparent 2px) 100% 0,
+    linear-gradient(to bottom, #3b82f6 2px, transparent 2px) 100% 0,
+    linear-gradient(to right, #3b82f6 2px, transparent 2px) 0 100%,
+    linear-gradient(to top, #3b82f6 2px, transparent 2px) 0 100%,
+    linear-gradient(to left, #3b82f6 2px, transparent 2px) 100% 100%,
+    linear-gradient(to top, #3b82f6 2px, transparent 2px) 100% 100%;
+  background-repeat: no-repeat;
+  background-size: 10px 10px;
+  animation: pulse-corners 3s infinite alternate ease-in-out;
+}
+
+.ai-vision-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  animation: scan-box 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.ai-vision-target {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444; /* Red dot representing damage */
+  top: 60%;
+  left: 40%;
+  opacity: 0;
+  animation: detect-damage 3s infinite;
+}
+
+.animate-float-search {
+  animation: float-search 15s infinite ease-in-out;
+}
+
+@keyframes float-search {
+  0% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(-40px, 30px) scale(0.95); }
+  40% { transform: translate(20px, 60px) scale(1.05); }
+  60% { transform: translate(60px, 10px) scale(0.9); }
+  80% { transform: translate(-20px, -20px) scale(1.02); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes scan-box {
+  0% { top: 0; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes pulse-corners {
+  0% { opacity: 0.3; transform: scale(0.95); }
+  100% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes detect-damage {
+  0%, 55% { opacity: 0; transform: scale(0.5); }
+  60% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px rgba(239, 68, 68, 0.6); }
+  75% { opacity: 1; transform: scale(1); }
+  90% { opacity: 0; transform: scale(1); }
+  100% { opacity: 0; }
+}
+
+/* ─────────────────────────────────────
+   LOGIN CARD INTERACTION
+   ───────────────────────────────────── */
+.login-card-interactive {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.login-card-interactive:active {
+  transform: scale(0.98);
+}
+.login-card-interactive:focus-within {
+  border-color: rgba(59, 130, 246, 0.4) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5), 0 16px 50px rgba(59, 130, 246, 0.15) !important;
+}
+[data-theme="dark"] .login-card-interactive:focus-within {
+  border-color: rgba(96, 165, 250, 0.5) !important;
+  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.6), 0 20px 60px rgba(96, 165, 250, 0.2), inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+
+/* ─────────────────────────────────────
+   LIGHT MODE — Override Tailwind grays
+   ───────────────────────────────────── */
+[data-theme="light"] .bg-secondary   { background-color: var(--color-secondary) !important; }
+[data-theme="light"] .bg-accent      { background-color: var(--color-accent) !important; }
+
+/* Gray backgrounds → light equivalents */
+[data-theme="light"] .bg-gray-950   { background-color: #f8fafc !important; }
+[data-theme="light"] .bg-gray-900   { background-color: #ffffff !important; }
+[data-theme="light"] .bg-gray-800   { background-color: #f8fafc !important; }
+[data-theme="light"] .bg-gray-700   { background-color: #f1f5f9 !important; }
+[data-theme="light"] .bg-gray-600   { background-color: #e2e8f0 !important; }
+
+/* Text → dark equivalents */
+[data-theme="light"] .text-white     { color: #1e293b !important; }
+[data-theme="light"] .text-gray-100  { color: #1e293b !important; }
+[data-theme="light"] .text-gray-200  { color: #334155 !important; }
+[data-theme="light"] .text-gray-300  { color: #475569 !important; }
+[data-theme="light"] .text-gray-400  { color: #64748b !important; }
+[data-theme="light"] .text-gray-500  { color: #94a3b8 !important; }
+[data-theme="light"] .text-gray-600  { color: #64748b !important; }
+
+/* Borders */
+[data-theme="light"] .border-gray-700 { border-color: #e2e8f0 !important; }
+[data-theme="light"] .border-gray-600 { border-color: #cbd5e1 !important; }
+[data-theme="light"] .border-gray-500 { border-color: #94a3b8 !important; }
+
+/* Specific component overrides */
+[data-theme="light"] .bg-\[\#1a2035\] { background-color: #ffffff !important; }
+[data-theme="light"] .bg-\[\#0f1629\] { background-color: #f8fafc !important; }
+[data-theme="light"] .border-gray-700\/60 { border-color: rgba(226, 232, 240, 0.8) !important; }
+
+/* Input fields in light mode */
+[data-theme="light"] .bg-secondary input,
+[data-theme="light"] input.bg-secondary {
+  background-color: var(--color-input-bg) !important;
+  border-color: var(--color-input-border) !important;
+  color: var(--color-text) !important;
+}
+
+/* Navbar in light mode */
+[data-theme="light"] .from-gray-900 { --tw-gradient-from: #ffffff !important; }
+[data-theme="light"] .via-gray-800  { --tw-gradient-via: #f8fafc !important; }
+[data-theme="light"] .to-blue-900   { --tw-gradient-to: #eff6ff !important; }
+
+/* Dropdown / drawer */
+[data-theme="light"] .bg-gray-800\/50 { background-color: rgba(241, 245, 249, 0.7) !important; }
+[data-theme="light"] .bg-gray-700\/60 { background-color: rgba(226, 232, 240, 0.7) !important; }
+[data-theme="light"] .bg-gray-700\/50 { background-color: rgba(226, 232, 240, 0.5) !important; }
+[data-theme="light"] .bg-gray-600\/80 { background-color: rgba(203, 213, 225, 0.8) !important; }
+[data-theme="light"] .bg-gray-600\/50 { background-color: rgba(203, 213, 225, 0.5) !important; }
+
+/* Blue accents stay but soften */
+[data-theme="light"] .bg-blue-600\/30 { background-color: rgba(37, 99, 235, 0.1) !important; }
+[data-theme="light"] .bg-blue-600\/20 { background-color: rgba(37, 99, 235, 0.08) !important; }
+[data-theme="light"] .text-blue-300   { color: #6366f1 !important; }
+[data-theme="light"] .text-blue-400   { color: #818cf8 !important; }
+[data-theme="light"] .border-blue-500\/40 { border-color: rgba(99, 102, 241, 0.25) !important; }
+
+/* Red accents */
+[data-theme="light"] .text-red-400   { color: #dc2626 !important; }
+[data-theme="light"] .bg-red-600\/20 { background-color: rgba(220, 38, 38, 0.08) !important; }
+[data-theme="light"] .hover\:text-red-300:hover { color: #ef4444 !important; }
+
+/* Hover overrides */
+[data-theme="light"] .hover\:bg-gray-700\/50:hover { background-color: rgba(226, 232, 240, 0.5) !important; }
+[data-theme="light"] .hover\:bg-gray-800:hover { background-color: #f1f5f9 !important; }
+[data-theme="light"] .hover\:bg-gray-700:hover { background-color: #e2e8f0 !important; }
+[data-theme="light"] .hover\:bg-gray-600:hover { background-color: #cbd5e1 !important; }
+[data-theme="light"] .hover\:bg-gray-600\/80:hover { background-color: rgba(203, 213, 225, 0.8) !important; }
+[data-theme="light"] .hover\:text-white:hover { color: #1e293b !important; }
+
+/* Drawer overlay */
+[data-theme="light"] .bg-black\/60 { background-color: rgba(0, 0, 0, 0.3) !important; }
+
+/* Shadow for drawer & dropdown */
+[data-theme="light"] .shadow-xl { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important; }
+[data-theme="light"] .shadow-2xl { box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15) !important; }
+
+/* ── STATUS BADGES (bg-gray-600 text-white → light-friendly) ── */
+/* Badge "Selesai" / "Aktif" di TrackingHistoryPage dan status pill */
+[data-theme="light"] .bg-gray-600.text-white {
+  background-color: #e2e8f0 !important;
+  color: #374151 !important;
+}
+/* Override untuk badge yang pakai bg-gray-600 dengan teks white */
+[data-theme="light"] span.bg-gray-600 {
+  background-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+/* Active nav item in light mode */
+[data-theme="light"] .bg-blue-600 {
+  background-color: #6366f1 !important;
+}
+[data-theme="light"] .bg-blue-600 .text-white,
+[data-theme="light"] .bg-blue-600 span {
+  color: #ffffff !important;
+}
+
+/* Gradient text-to backgrounds */
+[data-theme="light"] .to-blue-900\/60 { --tw-gradient-to: rgba(219, 234, 254, 0.6) !important; }
+
+/* Navbar light mode border shadow */
+[data-theme="light"] nav.border-b { 
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+/* Select / textarea in light mode */
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background-color: var(--color-input-bg) !important;
+  border-color: var(--color-input-border) !important;
+  color: var(--color-text) !important;
+}
+
+/* Green success badges */
+[data-theme="light"] .text-green-400 { color: #16a34a !important; }
+[data-theme="light"] .text-green-500 { color: #22c55e !important; }
+[data-theme="light"] .bg-green-600\/20 { background-color: rgba(22, 163, 74, 0.08) !important; }
+
+/* Yellow/amber warnings */
+[data-theme="light"] .text-yellow-400 { color: #d97706 !important; }
+[data-theme="light"] .text-amber-400  { color: #d97706 !important; }
+[data-theme="light"] .text-orange-400 { color: #ea580c !important; }
+
+/* Scrollbar for light mode */
+[data-theme="light"] ::-webkit-scrollbar-track { background: #f1f5f9; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Divider lines */
+[data-theme="light"] .h-px.bg-gray-700 { background-color: #e2e8f0 !important; }
+[data-theme="light"] .divide-gray-700 > * + * { border-color: #e2e8f0 !important; }
+
+/* Table rows */
+[data-theme="light"] tr:hover td { background-color: rgba(241, 245, 249, 0.5) !important; }
+
+/* Modal overlay */
+[data-theme="light"] .modal-overlay { background-color: rgba(0,0,0,0.3) !important; }
+
+/* Stat cards, info panels */
+[data-theme="light"] .bg-primary\/20 { background-color: rgba(37, 99, 235, 0.08) !important; }
+[data-theme="light"] .bg-primary\/10 { background-color: rgba(37, 99, 235, 0.05) !important; }
+[data-theme="light"] .text-primary { color: #6366f1 !important; }
+
+/* Gradient cards — from-gray-800 to-gray-900 */
+[data-theme="light"] .from-gray-800 { --tw-gradient-from: #ffffff !important; }
+[data-theme="light"] .to-gray-900 { --tw-gradient-to: #f8fafc !important; }
+
+/* Gradient status cards */
+[data-theme="light"] .from-red-900\/30 { --tw-gradient-from: rgba(254, 226, 226, 0.5) !important; }
+[data-theme="light"] .to-red-800\/20 { --tw-gradient-to: rgba(254, 202, 202, 0.3) !important; }
+[data-theme="light"] .from-yellow-900\/30 { --tw-gradient-from: rgba(254, 249, 195, 0.5) !important; }
+[data-theme="light"] .to-yellow-800\/20 { --tw-gradient-to: rgba(254, 240, 138, 0.3) !important; }
+[data-theme="light"] .from-green-900\/30 { --tw-gradient-from: rgba(220, 252, 231, 0.5) !important; }
+[data-theme="light"] .to-green-800\/20 { --tw-gradient-to: rgba(187, 247, 208, 0.3) !important; }
+
+/* Status card borders */
+[data-theme="light"] .border-red-700\/30 { border-color: rgba(252, 165, 165, 0.4) !important; }
+[data-theme="light"] .border-yellow-700\/30 { border-color: rgba(253, 224, 71, 0.4) !important; }
+[data-theme="light"] .border-green-700\/30 { border-color: rgba(134, 239, 172, 0.4) !important; }
+
+/* Gray transparency variants */
+[data-theme="light"] .bg-gray-700\/20 { background-color: rgba(241, 245, 249, 0.6) !important; }
+[data-theme="light"] .border-gray-700\/50 { border-color: rgba(226, 232, 240, 0.7) !important; }
+
+/* ── Icon circles / avatar (bg-gray-700, bg-gray-800 used for icon bg) ── */
+/* Pastikan icon bg di light mode tidak gelap */
+[data-theme="light"] .rounded-full.bg-gray-700 { background-color: #e2e8f0 !important; }
+[data-theme="light"] .rounded-full.bg-gray-800 { background-color: #f1f5f9 !important; }
+[data-theme="light"] .rounded-xl.bg-gray-800  { background-color: #f1f5f9 !important; }
+[data-theme="light"] .rounded-lg.bg-gray-800  { background-color: #f1f5f9 !important; }
+[data-theme="light"] .rounded-lg.bg-gray-700  { background-color: #e2e8f0 !important; }
+
+/* Colored status badges */
+[data-theme="light"] .text-red-300 { color: #ef4444 !important; }
+[data-theme="light"] .text-yellow-300 { color: #eab308 !important; }
+[data-theme="light"] .text-green-300 { color: #22c55e !important; }
+
+/* Hover borders */
+[data-theme="light"] .hover\:border-gray-600:hover { border-color: #cbd5e1 !important; }
+
+/* Button variants */
+[data-theme="light"] .bg-blue-600\/20 { background-color: rgba(99, 102, 241, 0.08) !important; }
+[data-theme="light"] .hover\:bg-blue-600\/30:hover { background-color: rgba(99, 102, 241, 0.14) !important; }
+[data-theme="light"] .border-blue-600\/30 { border-color: rgba(99, 102, 241, 0.18) !important; }
+
+/* ── Specific: TrackingHistoryPage icons circle ── */
+/* bg-gray-700/60 icon container — sudah ada di atas */
+[data-theme="light"] .border-gray-600\/50 { border-color: rgba(203, 213, 225, 0.6) !important; }
+
+/* ── ProfilePage, SettingsPage — readonly input ── */
+[data-theme="light"] .bg-gray-800\/50 { background-color: rgba(248, 250, 252, 0.9) !important; }
+[data-theme="light"] .border-gray-700 { border-color: #e2e8f0 !important; }
+
+/* ── Stat cards with from-X-900 backgrounds ── */
+[data-theme="light"] .from-blue-900\/30 { --tw-gradient-from: rgba(237, 233, 254, 0.5) !important; }
+[data-theme="light"] .to-blue-800\/20   { --tw-gradient-to: rgba(221, 214, 254, 0.3) !important; }
+[data-theme="light"] .border-blue-700\/30 { border-color: rgba(167, 139, 250, 0.35) !important; }
+
+/* ── AdminDashboard / PetugasDashboard header buttons ── */
+[data-theme="light"] button.bg-gray-700 {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+[data-theme="light"] button.bg-gray-700:hover {
+  background-color: #e2e8f0 !important;
+}
+[data-theme="light"] button.bg-gray-800 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+/* ── ConfirmModal dark background fix ── */
+[data-theme="light"] .bg-gray-900.rounded-2xl,
+[data-theme="light"] .bg-gray-900.rounded-xl {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* ── border-t/b separator lines ── */
+[data-theme="light"] .border-t.border-gray-700\/50 { border-color: rgba(226,232,240,0.7) !important; }
+[data-theme="light"] .border-b.border-gray-700 { border-color: #e2e8f0 !important; }
+
+/* ====================================================
+   LEAFLET MAP - BASE STYLES
+   ==================================================== */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+  position: relative !important;
+  overflow: hidden;
+}
+
+/* Pane di dalam container tetap absolute — tapi tidak container-nya */
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-overlay-pane,
+.leaflet-shadow-pane,
+.leaflet-marker-pane,
+.leaflet-tooltip-pane,
+.leaflet-popup-pane {
+  position: absolute;
+}
+
+/* Leaflet controls (zoom, attribution) — z lebih rendah dari navbar (600) */
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 200 !important;
+}
+
+.leaflet-popup {
+  z-index: 300 !important;
+}
+
+/* Modal & overlay selalu di atas segalanya */
+.modal-overlay {
+  z-index: 9999 !important;
+}
+
+/* Mobile navbar selalu di atas peta */
+.mobile-nav-overlay {
+  z-index: 800 !important;
+}
+.mobile-nav-drawer {
+  z-index: 900 !important;
+}
+
+/* ====================================================
+   DARK MODE STYLES
+   ==================================================== */
+.map-dark {
+  background-color: #1a1a2e;
+}
+
+.map-dark .leaflet-popup-content-wrapper {
+  background-color: #1a1a2e;
+  color: #f1f1f1;
+  border: 1px solid #2d3748;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(233, 69, 96, 0.15);
+}
+
+.map-dark .leaflet-popup-content {
+  margin: 12px 16px;
+}
+
+.map-dark .leaflet-popup-tip {
+  background-color: #1a1a2e;
+  border: 1px solid #2d3748;
+}
+
+.map-dark .leaflet-popup-close-button {
+  color: #9ca3af !important;
+  font-size: 20px !important;
+  padding: 6px 8px !important;
+}
+
+.map-dark .leaflet-popup-close-button:hover {
+  color: #e94560 !important;
+}
+
+.map-dark .leaflet-control-zoom a {
+  background-color: #1a1a2e !important;
+  color: #f1f1f1 !important;
+  border-color: #2d3748 !important;
+}
+
+.map-dark .leaflet-control-zoom a:hover {
+  background-color: #2d3748 !important;
+  color: #e94560 !important;
+}
+
+.map-dark .leaflet-control-attribution {
+  background-color: rgba(26, 26, 46, 0.85) !important;
+  color: #6b7280 !important;
+  font-size: 10px;
+}
+
+.map-dark .leaflet-control-attribution a {
+  color: #9ca3af !important;
+}
+
+/* ====================================================
+   LIGHT MODE STYLES
+   ==================================================== */
+.map-light {
+  background-color: #f8fafc;
+}
+
+.map-light .leaflet-popup-content-wrapper {
+  background-color: #ffffff;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.map-light .leaflet-popup-content {
+  margin: 12px 16px;
+}
+
+.map-light .leaflet-popup-tip {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.map-light .leaflet-popup-close-button {
+  color: #6b7280 !important;
+  font-size: 20px !important;
+  padding: 6px 8px !important;
+}
+
+.map-light .leaflet-popup-close-button:hover {
+  color: #dc2626 !important;
+}
+
+.map-light .leaflet-control-zoom a {
+  background-color: #ffffff !important;
+  color: #374151 !important;
+  border-color: #d1d5db !important;
+}
+
+.map-light .leaflet-control-zoom a:hover {
+  background-color: #f3f4f6 !important;
+  color: #dc2626 !important;
+}
+
+.map-light .leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  color: #6b7280 !important;
+  font-size: 10px;
+}
+
+.map-light .leaflet-control-attribution a {
+  color: #4b5563 !important;
+}
+
+/* ====================================================
+   KUBU RAYA BOUNDARY TOOLTIP
+   ==================================================== */
+.kuburaya-tooltip.dark {
+  background-color: #e94560 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(233, 69, 96, 0.5);
+}
+
+.kuburaya-tooltip.dark::before {
+  border-top-color: #e94560 !important;
+}
+
+.kuburaya-tooltip.light {
+  background-color: #dc2626 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+.kuburaya-tooltip.light::before {
+  border-top-color: #dc2626 !important;
+}
+
+/* ====================================================
+   ROAD TOOLTIP
+   ==================================================== */
+.road-tooltip.dark {
+  background-color: rgba(26, 26, 46, 0.95) !important;
+  color: #f1f1f1 !important;
+  border: 1px solid #4a5568 !important;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.road-tooltip.dark::before {
+  border-top-color: rgba(26, 26, 46, 0.95) !important;
+}
+
+.road-tooltip.light {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.road-tooltip.light::before {
+  border-top-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* ====================================================
+   KECAMATAN HIGHLIGHT TOOLTIP
+   ==================================================== */
+.kecamatan-highlight-tooltip.dark {
+  background-color: rgba(26, 26, 46, 0.95) !important;
+  color: white !important;
+  border: 2px solid currentColor !important;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.kecamatan-highlight-tooltip.dark::before {
+  display: none;
+}
+
+.kecamatan-highlight-tooltip.light {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #1f2937 !important;
+  border: 2px solid currentColor !important;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px;
+}
+
+.kecamatan-highlight-tooltip.light::before {
+  display: none;
+}
+
+/* ====================================================
+   RUAS JALAN TOOLTIP
+   ==================================================== */
+.ruas-tooltip.dark {
+  background-color: rgba(26, 26, 46, 0.92) !important;
+  color: #fbbf24 !important;
+  border: 1px solid #fbbf24 !important;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.ruas-tooltip.dark::before {
+  border-top-color: rgba(26, 26, 46, 0.92) !important;
+}
+
+.ruas-tooltip.light {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #92400e !important;
+  border: 1px solid #d97706 !important;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ruas-tooltip.light::before {
+  border-top-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Ruas highlight tooltip */
+.ruas-highlight-tooltip.dark {
+  background-color: #fbbf24 !important;
+  color: #1a1a2e !important;
+  border: none !important;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
+}
+
+.ruas-highlight-tooltip.dark::before {
+  border-top-color: #fbbf24 !important;
+}
+
+.ruas-highlight-tooltip.light {
+  background-color: #b45309 !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
+}
+
+.ruas-highlight-tooltip.light::before {
+  border-top-color: #b45309 !important;
+}
+
+/* ====================================================
+   PETUGAS MARKER
+   ==================================================== */
+.petugas-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ====================================================
+   SCALE CONTROL
+   ==================================================== */
+.map-dark .leaflet-control-scale-line {
+  background-color: rgba(26, 26, 46, 0.8) !important;
+  color: #d1d5db !important;
+  border-color: #6b7280 !important;
+}
+
+.map-light .leaflet-control-scale-line {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  color: #374151 !important;
+  border-color: #9ca3af !important;
+}
+
+/* ====================================================
+   LIGHT MODE — EXTENDED FIXES (all pages)
+   ==================================================== */
+
+/* ── Tab nav buttons (HistoryPage, TrackingHistoryPage) ── */
+[data-theme="light"] .tab-btn,
+[data-theme="light"] button[class*="rounded-full"][class*="bg-gray"] {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+/* Inactive tabs with bg-gray-800/bg-gray-700 look */
+[data-theme="light"] .bg-gray-800.rounded-full,
+[data-theme="light"] .bg-gray-700.rounded-full {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+/* ── Status select dropdown inside cards ── */
+[data-theme="light"] select.bg-yellow-600,
+[data-theme="light"] select.bg-blue-600,
+[data-theme="light"] select.bg-green-600,
+[data-theme="light"] select.bg-orange-500 {
+  color: #ffffff !important;
+}
+
+/* Semua select di dalam card HistoryPage */
+[data-theme="light"] .card select,
+[data-theme="light"] select[class*="bg-"] {
+  border: 1px solid var(--color-input-border) !important;
+}
+
+/* ── Card body text in HistoryPage ── */
+[data-theme="light"] .border-gray-800 { border-color: #e2e8f0 !important; }
+[data-theme="light"] .border-gray-800\/50 { border-color: rgba(226, 232, 240, 0.6) !important; }
+[data-theme="light"] .bg-gray-800\/30 { background-color: rgba(248, 250, 252, 0.8) !important; }
+[data-theme="light"] .bg-gray-800\/20 { background-color: rgba(248, 250, 252, 0.6) !important; }
+[data-theme="light"] .bg-gray-900\/50 { background-color: rgba(255, 255, 255, 0.8) !important; }
+[data-theme="light"] .bg-gray-900\/60 { background-color: rgba(255, 255, 255, 0.85) !important; }
+[data-theme="light"] .bg-gray-900\/80 { background-color: rgba(255, 255, 255, 0.9) !important; }
+
+/* ── HistoryPage card hover border ── */
+[data-theme="light"] .hover\:border-gray-600:hover { border-color: #cbd5e1 !important; }
+[data-theme="light"] .hover\:border-blue-500\/50:hover { border-color: rgba(37,99,235,0.35) !important; }
+
+/* ── Detail/Hapus buttons in HistoryPage cards ── */
+[data-theme="light"] .btn-secondary {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+[data-theme="light"] .btn-secondary:hover {
+  background-color: #e2e8f0 !important;
+}
+
+/* ── Orange/waiting_validation status ── */
+[data-theme="light"] .bg-orange-500\/20 { background-color: rgba(249, 115, 22, 0.1) !important; }
+[data-theme="light"] .bg-orange-600\/20 { background-color: rgba(234, 88, 12, 0.08) !important; }
+[data-theme="light"] .text-orange-300 { color: #ea580c !important; }
+[data-theme="light"] .border-orange-500\/50 { border-color: rgba(234, 88, 12, 0.35) !important; }
+
+/* ── MapPage filter panel ── */
+[data-theme="light"] .bg-gray-900.border-gray-700 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .bg-gray-900\/95 { background-color: rgba(255,255,255,0.97) !important; }
+
+/* ── Specific map panel: filter & activity sidebar ── */
+[data-theme="light"] [class*="bg-gray-900"][class*="shadow"] {
+  background-color: #ffffff !important;
+}
+
+/* ── AdminDashboard & PetugasDashboard stat cards ── */
+[data-theme="light"] .bg-gradient-to-br.from-gray-800.to-gray-900 {
+  background: linear-gradient(135deg, #ffffff, #f8fafc) !important;
+}
+
+/* ── Waiting validation pulse card ── */
+[data-theme="light"] .from-orange-900\/30 { --tw-gradient-from: rgba(255, 237, 213, 0.5) !important; }
+[data-theme="light"] .to-orange-800\/20   { --tw-gradient-to: rgba(254, 215, 170, 0.3) !important; }
+[data-theme="light"] .border-orange-700\/30 { border-color: rgba(251, 146, 60, 0.35) !important; }
+
+/* ── TrackingHistoryPage session cards ── */
+[data-theme="light"] .bg-gray-700\/40 { background-color: rgba(241,245,249,0.7) !important; }
+[data-theme="light"] .bg-gray-700\/30 { background-color: rgba(241,245,249,0.5) !important; }
+[data-theme="light"] .bg-gray-700\/10 { background-color: rgba(241,245,249,0.4) !important; }
+
+/* ── Purple tones (pending status) ── */
+[data-theme="light"] .bg-purple-500\/20 { background-color: rgba(168,85,247,0.08) !important; }
+[data-theme="light"] .text-purple-300   { color: #7c3aed !important; }
+[data-theme="light"] .border-purple-500\/50 { border-color: rgba(124,58,237,0.3) !important; }
+
+/* ── Emerald (reparasi role badge) ── */
+[data-theme="light"] .bg-emerald-600\/20 { background-color: rgba(5,150,105,0.08) !important; }
+[data-theme="light"] .text-emerald-400   { color: #059669 !important; }
+
+/* ── Map status filter buttons (the pill-shaped ones) ── */
+[data-theme="light"] .border-2.bg-purple-500\/20 { background-color: rgba(168,85,247,0.08) !important; }
+
+/* ── ReparasiDashboard & MapPage popup bg fix ── */
+[data-theme="light"] .bg-\[\#0f1629\] { background-color: #f8fafc !important; }
+[data-theme="light"] .bg-\[\#1a1a2e\] { background-color: #ffffff !important; }
+[data-theme="light"] .bg-\[\#16213e\] { background-color: #f8fafc !important; }
+
+/* ── Horizontal divider lines  ── */
+[data-theme="light"] .border-gray-700\/60 { border-color: rgba(226,232,240,0.8) !important; }
+[data-theme="light"] .border-gray-700\/40 { border-color: rgba(226,232,240,0.6) !important; }
+[data-theme="light"] .border-gray-700\/30 { border-color: rgba(226,232,240,0.5) !important; }
+[data-theme="light"] .border-gray-700\/20 { border-color: rgba(226,232,240,0.4) !important; }
+
+/* ── Search bar bg ── */
+[data-theme="light"] .bg-gray-800.rounded-xl,
+[data-theme="light"] .bg-gray-800.rounded-lg,
+[data-theme="light"] .bg-gray-800.rounded-2xl {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* ── Pagination buttons ── */
+[data-theme="light"] button.bg-gray-800,
+[data-theme="light"] button.bg-gray-700 {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+/* ── Map controls bar explicit ── */
+[data-theme="light"] .map-controls-bar {
+  background-color: #ffffff !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+/* ── ChevronDown icon in select fields ── */
+[data-theme="light"] .text-gray-400.pointer-events-none { color: #94a3b8 !important; }
+
+/* ── AdminDashboard recent tracking row hover ── */
+[data-theme="light"] .hover\:bg-gray-700\/30:hover { background-color: rgba(241,245,249,0.6) !important; }
+[data-theme="light"] .hover\:bg-gray-700\/20:hover { background-color: rgba(241,245,249,0.4) !important; }
+
+/* ── Fix remaining hardcoded text-white on non-colored elements ── */
+[data-theme="light"] p.text-white:not([class*="bg-"]),
+[data-theme="light"] span.text-white:not([class*="bg-blue"]):not([class*="bg-green"]):not([class*="bg-red"]):not([class*="bg-orange"]):not([class*="bg-yellow"]):not([class*="bg-purple"]):not([class*="bg-emerald"]) {
+  color: #1e293b !important;
+}
+
+/* ── Additional text readability in light mode ── */
+[data-theme="light"] .text-gray-200 { color: #334155 !important; }
+[data-theme="light"] .text-gray-300 { color: #475569 !important; }
+
+/* ── Card action area divider ── */
+[data-theme="light"] .border-t.border-gray-700\/50 { border-color: #e2e8f0 !important; }
+
+/* ── Empty state & no-data illustrations ── */
+[data-theme="light"] .text-gray-300.text-lg { color: #374151 !important; }
+
+/* ── Bulk select bar ── */
+[data-theme="light"] .card.bg-blue-900\/20 {
+  background-color: rgba(219, 234, 254, 0.4) !important;
+  border-color: rgba(37, 99, 235, 0.35) !important;
+}
