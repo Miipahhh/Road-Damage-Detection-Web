@@ -1,42 +1,42 @@
-# 🛣️ Road Damage Detection System (Web Platform)
+# Road Damage Detection System (Web Platform)
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 
-Selamat datang di repositori web **Road Damage Detection System**. Aplikasi ini adalah sebuah _platform_ cerdas yang ditujukan bagi instansi atau dinas terkait (seperti Dinas PU) untuk memantau, mendeteksi, dan mengelola pelaporan kerusakan jalan secara terintegrasi dan _real-time_.
+Repositori web **Road Damage Detection System** ini merupakan sebuah aplikasi yang ditujukan bagi instansi atau dinas terkait (seperti Dinas Pekerjaan Umum) untuk memantau, mendeteksi, dan mengelola pelaporan kerusakan jalan secara terintegrasi dan _real-time_.
 
 ---
 
-## 🔗 Integrasi Model Artificial Intelligence (AI)
+## Integrasi Model Artificial Intelligence (AI)
 
-> **⚠️ PENTING:**
-> Repositori ini **hanya berisi bagian aplikasi web (Frontend & Backend)**. Sistem pendeteksian cerdas pada aplikasi ini didukung oleh Model _Computer Vision / Machine Learning_ yang dikerjakan secara terpisah.
+> **CATATAN PENTING:**
+> Repositori ini **hanya berisi bagian aplikasi web (Frontend & Backend)**. Sistem pendeteksian pada aplikasi ini didukung oleh Model _Computer Vision / Machine Learning_ yang dikerjakan secara terpisah.
 >
-> Untuk melihat struktur model AI, arsitektur, dan cara pelatihannya, silakan kunjungi repositori terhubung milik rekan peneliti saya di bawah ini:
+> Untuk melihat struktur model AI, arsitektur, dan cara pelatihannya, silakan kunjungi repositori terhubung di bawah ini:
 >
-> 👉 **[Tautan Repositori Model AI Teman Saya] (Silakan ganti dengan link GitHub yang sebenarnya)**
+> **Tautan Repositori Model:** https://github.com/marshell-fitriawan/Road-Damage-Detection-Yolov8
 
 ---
 
-## ✨ Fitur Utama
+## Fitur Utama
 
-Sistem ini memiliki berbagai fitur utama yang disesuaikan berdasarkan hak akses (Role) penggunanya:
+Sistem ini memiliki berbagai fitur utama yang disesuaikan berdasarkan hak akses pengguna:
 
-### 👨‍💻 Admin
+### Admin
 
 - **Dashboard Analitik**: Melihat ringkasan dan statistik kerusakan jalan berdasarkan tingkat keparahan (_severity_).
 - **Manajemen Pengguna**: Menambahkan, mengedit, dan menghapus akun (Petugas Lapangan & Tim Reparasi).
 - **Peta Interaktif**: Memantau seluruh titik kerusakan jalan yang telah terdeteksi dalam satu peta komprehensif.
 
-### 🕵️‍♂️ Petugas Lapangan
+### Petugas Lapangan
 
-- **Tracking Otomatis**: Memulai sesi patroli dengan integrasi GPS dan kamera cerdas.
+- **Tracking Otomatis**: Memulai sesi patroli dengan integrasi GPS dan kamera.
 - **Deteksi Real-time**: Secara otomatis menandai jalan berlubang, retak buaya, dsb., saat di perjalanan.
 - **Riwayat Tracking**: Melihat rekap rute patroli dan kerusakan yang ditemukan selama sesi sebelumnya.
 
-### 👷 Tim Reparasi
+### Tim Reparasi
 
 - **Daftar Tugas Perbaikan**: Menerima data titik kerusakan jalan yang valid untuk segera ditindaklanjuti.
 - **Update Status**: Mengubah status kerusakan menjadi "Sedang Diperbaiki" atau "Selesai" (dilengkapi bukti perbaikan).
@@ -44,9 +44,9 @@ Sistem ini memiliki berbagai fitur utama yang disesuaikan berdasarkan hak akses 
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
-Aplikasi ini dibangun menggunakan arsitektur _Client-Server_ dengan tumpukan teknologi modern:
+Aplikasi ini dibangun menggunakan arsitektur _Client-Server_ dengan teknologi berikut:
 
 **Frontend:**
 
@@ -63,7 +63,7 @@ Aplikasi ini dibangun menggunakan arsitektur _Client-Server_ dengan tumpukan tek
 
 ---
 
-## 📂 Struktur Direktori
+## Struktur Direktori
 
 ```text
 Road-Damage-Web/
@@ -77,9 +77,9 @@ Road-Damage-Web/
 
 ---
 
-## 🚀 Panduan Instalasi (Local Development)
+## Panduan Instalasi (Local Development)
 
-Untuk menjalankan proyek ini di mesin lokal (komputer/laptop) Anda, pastikan Anda telah menginstal beberapa perangkat lunak berikut:
+Untuk menjalankan proyek ini di mesin lokal, pastikan Anda telah menginstal beberapa perangkat lunak berikut:
 
 - **Node.js** (Versi 18+ disarankan)
 - **PHP** (Versi 8.1+)
@@ -127,10 +127,10 @@ start.bat
 
 ---
 
-## 👨‍🎓 Hak Cipta & Pengembang
+## Hak Cipta & Pengembang
 
-Aplikasi web ini dikembangkan sebagai bagian dari Tugas Akhir dan Diusulkan untuk Dinas Pekerjaan Umum Kabupaten Kubu Raya. Seluruh _source code_ dirancang untuk keperluan akademis dan penelitian terkait integrasi _Computer Vision_ pada aplikasi pemantauan jalan raya.
+Aplikasi web ini dikembangkan sebagai bagian dari Tugas Akhir dan diusulkan untuk Dinas Pekerjaan Umum Kabupaten Kubu Raya. Seluruh _source code_ dirancang untuk keperluan akademis dan penelitian terkait integrasi _Computer Vision_ pada aplikasi pemantauan jalan raya.
 
-Dibuat oleh **Muhamad Pahmi**
-NIM **3202316122**
+Dibuat oleh **Muhamad Pahmi**  
+NIM **3202316122**  
 **Politeknik Negeri Pontianak**
