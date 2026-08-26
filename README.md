@@ -127,10 +127,8 @@ start.bat
 
 ---
 
-## Hak Cipta & Pengembang
+## Lisensi & Pengembang
 
-Aplikasi web ini dikembangkan sebagai bagian dari Tugas Akhir dan diusulkan untuk Dinas Pekerjaan Umum Kabupaten Kubu Raya. Seluruh _source code_ dirancang untuk keperluan akademis dan penelitian terkait integrasi _Computer Vision_ pada aplikasi pemantauan jalan raya.
+Proyek ini dilisensikan di bawah lisensi MIT. Silakan merujuk pada berkas `LICENSE` untuk informasi lebih lanjut.
 
-Dibuat oleh **Muhamad Pahmi**  
-NIM **3202316122**  
-**Politeknik Negeri Pontianak**
+Dikembangkan oleh **Muhamad Pahmi**
